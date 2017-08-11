@@ -1,0 +1,2 @@
+data\\StandartPicture\\Player_Tank.bmp
+data\\StandartPicture\\Player_Bullet.bmp
