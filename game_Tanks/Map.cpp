@@ -60,7 +60,7 @@ Map::Map(string objectFileName, HINSTANCE hInstance, HBitmapStorage& hBitmapStor
 	file >> n;
 	while (n--)
 	{
-		file >> pictureName >> leftX >> topY >> life >> size >> bulletReaction >> destroyedByBullet >> tankReaction;
+		file >> pictureName >> leftX >> topY >> life >> bulletReaction >> destroyedByBullet >> tankReaction;
 		blockPicture = &hBitmapStorage.blockPictureMass.find(pictureName)->second;
 		blockList.push_back(Block{ &blockPicture->picture ,RECT{ leftX, topY, leftX + blockPicture->length  , topY + blockPicture->height },
 									 life ,bulletReaction ,destroyedByBullet , tankReaction													});

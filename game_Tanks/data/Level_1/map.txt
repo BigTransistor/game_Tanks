@@ -3,4 +3,6 @@ playerTank 0 0 1 10 40 20 1 playerBullet 1 0
 enemyTank 360 360 2 10 80 20 1 enemyBullet 0 1
 enemyTank 120 120 5 5 80 10 2 enemyBullet 0 1
 enemyTank 240 240 1 15 40 20 1 enemyBullet 0 1
-0
+2
+brick 300 0 1 1 1 1
+iron 360 60 1 1 0 1
