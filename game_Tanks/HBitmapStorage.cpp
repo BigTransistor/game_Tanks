@@ -1,8 +1,24 @@
 #include "HBitmapStorage.h"
-HBitmapStorage::HBitmapStorage(string bitmapHileName, HINSTANCE& hInstance)
-	:standartPlayerTank{ "data\\StandartPicture\\Player_Tank_",hInstance , 60, 60 },
-	standartPlayerBullet{ "data\\StandartPicture\\Player_Bullet_", hInstance ,12 , 18 },
-	standartEnemyTank{ "data\\StandartPicture\\Enemy_Tank_" , hInstance , 60 , 60 }
+#include <fstream>
+#include <string>
+using namespace std;
+
+HBitmapStorage::HBitmapStorage(string bitmapFileName, HINSTANCE& hInstance)
 {
-	brick = static_cast<HBITMAP>(LoadImage(hInstance, "data\\StandartPicture\\Brick.bmp", IMAGE_BITMAP, 30, 30, LR_LOADFROMFILE));
+	ifstream file{ bitmapFileName };
+	
+	string name, adress;
+	short int length, height, n;
+	file >> n;
+	while (n--)
+	{
+		file >> name >> adress >> length >> height;
+		moveObjectPictureMass.insert(pair<string, Picture4Directions>(name, Picture4Directions(adress, hInstance, length, height)));
+	}
+	file >> n;
+	while (n--)
+	{
+		file >> name >> adress >> length >> height;
+		blockPictureMass.insert(pair<string, Picture1Directions>(name, Picture1Directions(adress, hInstance, length, height)));
+	}
 };

@@ -13,7 +13,7 @@ class Map
 protected:
 	RECT frame;
 	list<Tank> enemyTankList;
-	list<Bullet> bulletList;
+	list<MoveBullet> bulletList;
 	list<Block> blockList;
 	Tank* playerTank;
 public:

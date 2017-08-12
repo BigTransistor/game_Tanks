@@ -14,7 +14,7 @@ void Game::playerIntellect()
 	{
 	case shotKey:
 		if (map.playerTank->shotPossibility())
-			map.bulletList.push_back(map.playerTank->shot( Bullet::BulletType(true , false , &hBitmapStorage.standartPlayerBullet ) ) );
+			map.bulletList.push_back(map.playerTank->shot());
 	case nothing:	return;
 
 	default:
@@ -34,7 +34,7 @@ void Game::enemyIntellect()
 		tank->appTimeAfterShot();
 		if (tank->shotPossibility())
 		{
-			map.bulletList.push_back(tank->shot(Bullet::BulletType(false, true, &hBitmapStorage.standartPlayerBullet )));
+			map.bulletList.push_back(tank->shot());
 			return;
 		}
 		RECT futureLocation(tank->motion—alculation());
@@ -85,7 +85,7 @@ void Game::bulletIntellect()
 		else bullet++;
 	}
 }
-bool Game::checkBulletContact(list<Bullet>::iterator& currentBullet)
+bool Game::checkBulletContact(list<MoveBullet>::iterator& currentBullet)
 {
 	bool temp(false);
 	RECT bulletCoordinates(currentBullet->get_coordinates());
@@ -105,12 +105,12 @@ bool Game::checkBulletContact(list<Bullet>::iterator& currentBullet)
 		else block++;
 	}
 
-	if (intersectionRectRect(bulletCoordinates, map.playerTank->get_coordinates()) && currentBullet->get_type().allienceTarget)
+	if (intersectionRectRect(bulletCoordinates, map.playerTank->get_coordinates()) && currentBullet->get_allienceTarget())
 	{
 		temp = true;
 		//khhhhhhhhhhh
 	}
-	if (currentBullet->get_type().enemyTarget)
+	if (currentBullet->get_enemyTarget())
 	{
 		auto tank(map.enemyTankList.begin());
 		while (tank != map.enemyTankList.end())

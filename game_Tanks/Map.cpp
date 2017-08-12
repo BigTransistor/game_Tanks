@@ -33,23 +33,38 @@ void Map::draw(HDC& hDc, HWND& hWnd, HBITMAP& hBitmap, RECT& coordinates)
 }
 Map::Map(string objectFileName, HINSTANCE hInstance, HBitmapStorage& hBitmapStorage) : frame{ 0, 0, 600, 600 }
 {
-	/*ifstream file{ objectFileName };
-	string pictureName;
-	short int leftX, topY , life , speed , shotDeleyTime ,bulletSpeed , bulletDamage ;
-	file >> pictureName >> leftX >> topY >> life >> speed >> shotDeleyTime >> bulletSpeed >> bulletDamage;
-	playerTank = new Tank{ &hBitmapStorage.standartPlayerTank,RECT{ leftX, topY, leftX + 60, topY + 60 }, static_cast<Directions>(rand() % 4) ,life, speed , shotDeleyTime , bulletSpeed ,bulletDamage  };
-	int n;
-	file >> n;
-	while (n)
-	{
-		file >> pictureName >> leftX >> topY >> life >> speed >> shotDeleyTime >> bulletSpeed >> bulletDamage;
-		n--;
-	}
-	*/
+	ifstream file{ objectFileName };
+	if (!file) { PostQuitMessage(0); return; }
+	string pictureName , bulletPictureName;
+	short int leftX, topY, life, speed, shotDeleyTime, bulletSpeed, bulletDamage, size , n ;
+	bool bulletReaction , destroyedByBullet , tankReaction , enemyTarget , allienceTarget;
+	Picture4Directions *tankPicture , *bulletPicture;
+	Picture1Directions* blockPicture;
 
-	playerTank = new Tank{ &hBitmapStorage.standartPlayerTank,RECT{ 0, 0,  60, 60 }, static_cast<Directions>(rand() % 4) };
-	enemyTankList.push_back(Tank{ &hBitmapStorage.standartEnemyTank, RECT{ 120, 120, 180, 180 }, static_cast<Directions>(rand() % 4) });
-	blockList.push_back(Block{ &hBitmapStorage.brick , RECT{ 240 , 240 , 270 , 270 } , 1 , true , true , true });
+	file >> pictureName >> leftX >> topY >> life >> speed >> shotDeleyTime >> bulletSpeed >> bulletDamage >> bulletPictureName >> enemyTarget >> allienceTarget;
+	tankPicture = &hBitmapStorage.moveObjectPictureMass.find(pictureName)->second;
+	bulletPicture = &hBitmapStorage.moveObjectPictureMass.find(bulletPictureName)->second;
+
+	playerTank = new Tank{	tankPicture ,RECT{ leftX, topY, leftX + tankPicture->length  , topY + tankPicture->height }, static_cast<Directions>(rand() % 4), 
+							StaticBullet{ bulletPicture , enemyTarget, allienceTarget,  bulletSpeed, bulletDamage = 1 } ,life, speed , shotDeleyTime			};
+	file >> n;
+	while (n--)
+	{
+		file >> pictureName >> leftX >> topY >> life >> speed >> shotDeleyTime >> bulletSpeed >> bulletDamage >>  bulletPictureName  >> enemyTarget >> allienceTarget;
+		tankPicture = &hBitmapStorage.moveObjectPictureMass.find(pictureName)->second;
+		bulletPicture = &hBitmapStorage.moveObjectPictureMass.find(bulletPictureName)->second;
+		enemyTankList.push_back(Tank{	tankPicture ,RECT{ leftX, topY, leftX + tankPicture->length  , topY + tankPicture->height }, static_cast<Directions>(rand() % 4) ,
+										StaticBullet{ bulletPicture , enemyTarget, allienceTarget,  bulletSpeed, bulletDamage = 1} ,life, speed , shotDeleyTime				});
+		//StaticBullet( Picture4Directions* _picture, bool _enemyTarget, bool _allienceTarget, short int _speed, short int damage = 1);
+	}
+	file >> n;
+	while (n--)
+	{
+		file >> pictureName >> leftX >> topY >> life >> size >> bulletReaction >> destroyedByBullet >> tankReaction;
+		blockPicture = &hBitmapStorage.blockPictureMass.find(pictureName)->second;
+		blockList.push_back(Block{ &blockPicture->picture ,RECT{ leftX, topY, leftX + blockPicture->length  , topY + blockPicture->height },
+									 life ,bulletReaction ,destroyedByBullet , tankReaction													});
+	}
 }
 Map::~Map()
 {

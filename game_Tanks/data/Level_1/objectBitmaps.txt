@@ -1,2 +1,6 @@
-data\\StandartPicture\\Player_Tank.bmp
-data\\StandartPicture\\Player_Bullet.bmp
+4
+playerTank data\\StandartPicture\\Player_Tank_ 60 60
+enemyTank data\\StandartPicture\\Enemy_Tank_ 60 60
+playerBullet data\\StandartPicture\\Player_Bullet_ 12 18
+enemyBullet data\\StandartPicture\\Enemy_Bullet_ 12 18
+0

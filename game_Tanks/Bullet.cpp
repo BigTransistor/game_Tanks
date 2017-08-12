@@ -1,5 +1,20 @@
 #include "Bullet.h"
-void Bullet::move()
+
+StaticBullet::StaticBullet(Picture4Directions* _picture, bool _enemyTarget, bool _allienceTarget, short int _speed, short int _damage )
+	: picture(_picture), enemyTarget(_enemyTarget) , allienceTarget(_allienceTarget) , speed(_speed), damage(_damage){}
+
+MoveBullet::MoveBullet(StaticBullet bulletInfo, RECT _coordinates, Directions _direction): 
+	StaticBullet(bulletInfo) , coordinates(_coordinates) , direction(_direction)
+{
+	switch (direction)
+	{
+	case topDirection:		hBitmap = &picture->top;	break;
+	case rightDirection:	hBitmap = &picture->right;	break;
+	case bottomDirection:	hBitmap = &picture->bottom; break;
+	case leftDirection:		hBitmap = &picture->left;	break;
+	}
+}
+void MoveBullet::move()
 {
 	switch (direction)
 	{
@@ -9,18 +24,3 @@ void Bullet::move()
 	case leftDirection:		coordinates.left -= speed;	coordinates.right -= speed;		break;
 	}
 }
-
-Bullet::Bullet(BulletType _type, RECT _coordinates, Directions _direction, short int _speed, short int _damage )
-	:type(_type), coordinates(_coordinates), direction(_direction), speed(_speed), damage(_damage) 
-{
-	switch (direction)
-	{
-	case topDirection:		hBitmap = &type.picture->top;	break;
-	case rightDirection:	hBitmap = &type.picture->right;	break;
-	case bottomDirection:	hBitmap = &type.picture->bottom;break;
-	case leftDirection:		hBitmap = &type.picture->left;	break;
-	}
-}
-
-Bullet::BulletType::BulletType( bool _enemyTarget , bool _allienceTarget, Picture* _picture)
-	: enemyTarget(_enemyTarget), allienceTarget(_allienceTarget), picture(_picture) {}

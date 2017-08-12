@@ -2,7 +2,7 @@
 #include <windows.h>
 #include"Picture.h"
 #include <iostream>
-#include <vector>
+#include <map>
 using namespace std;
 class Game;
 class Map;
@@ -12,8 +12,8 @@ class HBitmapStorage
 friend Game;
 friend Map;
 public:
-	Picture standartPlayerTank, standartPlayerBullet , standartEnemyTank;
-	HBITMAP brick;
+	map<string, Picture4Directions> moveObjectPictureMass;
+	map<string, Picture1Directions> blockPictureMass;
 	HBitmapStorage(string bitmapHileName, HINSTANCE& hInstance);
-	~HBitmapStorage(){}
+	~HBitmapStorage() { moveObjectPictureMass.clear(); blockPictureMass.clear(); }
 };

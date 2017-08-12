@@ -45,7 +45,7 @@ LRESULT CALLBACK gameFunction(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 
 int WINAPI	WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
-	game = new Game( "data\\Level_1\\map.txt" , "data\\Level_1\\objectBitmap.txt" , hInstance);
+	game = new Game( "data\\Level_1\\map.txt" , "data\\Level_1\\objectBitmaps.txt" , hInstance);
 
 
 	WNDCLASS gameWndClass = { NULL , gameFunction , NULL , NULL , hInstance ,NULL,NULL,CreateSolidBrush(RGB(0, 0, 0)),NULL,"gameWndClass" };

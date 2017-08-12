@@ -34,44 +34,43 @@ Tank& Tank::set_directions(Directions _directions)
 	return *this;
 }
 
-Bullet Tank::shot(Bullet::BulletType bulletType)
+MoveBullet Tank::shot()
 {
-	shotInfo.timeAfterShot = 0;
+	timeAfterShot = 0;
 	RECT bulletCoordinates;
 	switch (direction)
 	{
 	case topDirection:
-		bulletCoordinates.left = (coordinates.right + coordinates.left - bulletType.picture->length ) / 2;
-		bulletCoordinates.top = coordinates.top - bulletType.picture->height;
-		bulletCoordinates.right = (coordinates.right + coordinates.left + bulletType.picture->length ) / 2;
+		bulletCoordinates.left = (coordinates.right + coordinates.left - bulletInfo.get_picture()->length ) / 2;
+		bulletCoordinates.top = coordinates.top - bulletInfo.get_picture()->height;
+		bulletCoordinates.right = (coordinates.right + coordinates.left + bulletInfo.get_picture()->length ) / 2;
 		bulletCoordinates.bottom = coordinates.top;
 		break;
 	case rightDirection:
 		bulletCoordinates.left = coordinates.right;
-		bulletCoordinates.top = (coordinates.top + coordinates.bottom - bulletType.picture->length) / 2;
-		bulletCoordinates.right = coordinates.right + bulletType.picture->height;
-		bulletCoordinates.bottom = (coordinates.top + coordinates.bottom + bulletType.picture->length) / 2;
+		bulletCoordinates.top = (coordinates.top + coordinates.bottom - bulletInfo.get_picture()->length) / 2;
+		bulletCoordinates.right = coordinates.right + bulletInfo.get_picture()->height;
+		bulletCoordinates.bottom = (coordinates.top + coordinates.bottom + bulletInfo.get_picture()->length) / 2;
 		break;
 	case bottomDirection:
-		bulletCoordinates.left = (coordinates.right + coordinates.left - bulletType.picture->length) / 2 ;
+		bulletCoordinates.left = (coordinates.right + coordinates.left - bulletInfo.get_picture()->length) / 2 ;
 		bulletCoordinates.top = coordinates.bottom;
-		bulletCoordinates.right = (coordinates.right + coordinates.left + bulletType.picture->length) / 2;
-		bulletCoordinates.bottom = coordinates.bottom + bulletType.picture->height;
+		bulletCoordinates.right = (coordinates.right + coordinates.left + bulletInfo.get_picture()->length) / 2;
+		bulletCoordinates.bottom = coordinates.bottom + bulletInfo.get_picture()->height;
 		break;
 	case leftDirection:
-		bulletCoordinates.left = coordinates.left - bulletType.picture->height;
-		bulletCoordinates.top = (coordinates.top + coordinates.bottom - bulletType.picture->length) / 2;
+		bulletCoordinates.left = coordinates.left - bulletInfo.get_picture()->height;
+		bulletCoordinates.top = (coordinates.top + coordinates.bottom - bulletInfo.get_picture()->length) / 2;
 		bulletCoordinates.right = coordinates.left;
-		bulletCoordinates.bottom = (coordinates.top + coordinates.bottom + bulletType.picture->length) / 2;
+		bulletCoordinates.bottom = (coordinates.top + coordinates.bottom + bulletInfo.get_picture()->length) / 2;
 		break;
 	}
-	return Bullet(bulletType, bulletCoordinates, direction, shotInfo.bulletSpeed , shotInfo.bulletDamage );
+	return MoveBullet(bulletInfo, bulletCoordinates, direction);
 }
-Tank::Tank(	Picture* _picture, RECT _coordinates, Directions _direction, short int _life , short int _speed ,
-			short int _shotDelayTime , short int _bulletSpeed, short int _bulletDamage)
-	:picture(_picture), coordinates(_coordinates), direction(_direction), speed(_speed), life(_life)
+Tank::Tank(	Picture4Directions* _picture, RECT _coordinates, Directions _direction, StaticBullet _bulletInfo ,short int _life , short int _speed ,short int _shotDelayTime )
+	:picture(_picture), coordinates(_coordinates), direction(_direction), speed(_speed), life(_life) , shotDelayTime(_shotDelayTime),bulletInfo(_bulletInfo)
 {
-	shotInfo = { _shotDelayTime , rand() % _shotDelayTime , _bulletSpeed , _bulletDamage };
+	timeAfterShot = rand() % _shotDelayTime;
 	switch (direction)
 	{
 	case topDirection:	hBitmap = &picture->top;	break;
@@ -80,4 +79,3 @@ Tank::Tank(	Picture* _picture, RECT _coordinates, Directions _direction, short i
 	case leftDirection:	hBitmap = &picture->left;	break;
 	}
 }
-bool Tank::shotPossibility() { return shotInfo.shotDelayTime <= shotInfo.timeAfterShot; }

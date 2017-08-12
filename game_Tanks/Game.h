@@ -15,7 +15,7 @@ protected:
 	void playerIntellect();
 		bool checkPlayerTankMove(RECT&);
 	void bulletIntellect();
-		bool checkBulletContact(list<Bullet>::iterator& );
+		bool checkBulletContact(list<MoveBullet>::iterator& );
 	
 	void endGame(bool);
 public:
