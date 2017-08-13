@@ -25,6 +25,7 @@ public:
 	bool Tank::shotPossibility() { return shotDelayTime <= timeAfterShot; }
 
 	RECT motionÑalculation();
+	RECT tailCalculation();
 	MoveBullet shot();
 	bool hitting(short int damage);
 

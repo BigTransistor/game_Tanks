@@ -4,9 +4,13 @@
 using namespace std;
 void Map::render(HWND& hWnd)
 {
-	InvalidateRect(hWnd, &frame, true);
+	InvalidateRect(hWnd, &frame, false);
+
 	PAINTSTRUCT paintStruct;
 	HDC hDc = BeginPaint(hWnd, &paintStruct);
+
+	for (auto iter = removeOldImage.begin(); iter != removeOldImage.end(); iter = removeOldImage.erase(iter))
+		iter->draw(hDc);
 
 	draw(hDc, hWnd, *playerTank->get_hBitmap(), playerTank->get_coordinates());
 

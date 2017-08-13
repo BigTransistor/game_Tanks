@@ -76,6 +76,7 @@ int WINAPI	WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 		DispatchMessage(&messge_code);				//Передаёт сообщение соответствующей функции окна(Function_WNDCLASS_Game)
 	}
 	UnregisterClass("gameWndClass", hInstance);
+	delete game;
 	return(messge_code.wParam);
 }
 

@@ -4,6 +4,7 @@
 #include "Tank.h"
 #include "Block.h"
 #include "HBitmapStorage.h"
+#include "RemoveOldImage.h"
 using namespace std;
 class Game;
 
@@ -15,6 +16,7 @@ protected:
 	list<Tank> enemyTankList;
 	list<MoveBullet> bulletList;
 	list<Block> blockList;
+	list<RemoveOldImage> removeOldImage;
 	Tank* playerTank;
 public:
 	short int get_length() { return frame.right; }

@@ -30,7 +30,7 @@ protected:
 	RECT coordinates;
 	Directions direction;
 public:
-	void move();
+	RECT move();
 	HBITMAP* get_hBitmap() { return hBitmap; }
 	RECT get_coordinates() { return coordinates; }
 	MoveBullet( StaticBullet bulletInfo , RECT _coordinates , Directions _direction );

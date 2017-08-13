@@ -25,7 +25,10 @@ void Game::playerIntellect()
 	}
 	RECT futureLocation(map.playerTank->motion—alculation());
 	if (!checkPlayerTankMove(futureLocation))
+	{
+		map.removeOldImage.push_back(RemoveOldImage{ map.playerTank->tailCalculation() });
 		map.playerTank->set_coordinates(futureLocation);
+	}
 }
 void Game::enemyIntellect()
 {
@@ -33,17 +36,19 @@ void Game::enemyIntellect()
 	{
 		tank->appTimeAfterShot();
 		if (tank->shotPossibility())
-		{
 			map.bulletList.push_back(tank->shot());
-			return;
-		}
+
 		RECT futureLocation(tank->motion—alculation());
 		if (checkEnemyTankMove(futureLocation, tank))
 		{
 			auto newDirection(static_cast<Directions>(rand() % AMOUNT_OF_DIRECTIONS)) ;
 			tank->set_directions(newDirection);
 		}
-		else tank->set_coordinates(futureLocation);
+		else
+		{
+			map.removeOldImage.push_back(RemoveOldImage{ tank->tailCalculation() });
+			tank->set_coordinates(futureLocation);
+		}
 	}
 }
 
@@ -79,9 +84,12 @@ void Game::bulletIntellect()
 	auto bullet(map.bulletList.begin());
 	while (bullet != map.bulletList.end())
 	{
-		bullet->move();
+		map.removeOldImage.push_back(RemoveOldImage{ bullet->move() }); 
 		if (checkBulletContact(bullet))
+		{
+			map.removeOldImage.push_back(bullet->get_coordinates());
 			bullet = map.bulletList.erase(bullet);
+		}
 		else bullet++;
 	}
 }
@@ -95,11 +103,14 @@ bool Game::checkBulletContact(list<MoveBullet>::iterator& currentBullet)
 	auto block(map.blockList.begin());
 	while (block != map.blockList.end())
 	{
-		if (intersectionRectRect(bulletCoordinates, block->get_coordinates()) && block ->get_bulletReaction())
+		if (intersectionRectRect(bulletCoordinates, block->get_coordinates()) && block->get_bulletReaction())
 		{
 			temp = true;
 			if (block->hitting(currentBullet->get_damage()))
+			{
+				map.removeOldImage.push_back(block->get_coordinates());
 				block = map.blockList.erase(block);
+			}
 			else block++;
 		}
 		else block++;
@@ -119,7 +130,10 @@ bool Game::checkBulletContact(list<MoveBullet>::iterator& currentBullet)
 			{
 				temp = true;
 				if (tank->hitting(currentBullet->get_damage()))
+				{
+					map.removeOldImage.push_back(tank->get_coordinates());
 					tank = map.enemyTankList.erase(tank);
+				}
 				else tank++;
 			}
 			else tank++;

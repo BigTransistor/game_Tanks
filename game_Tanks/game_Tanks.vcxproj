@@ -117,6 +117,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Picture.h" />
     <ClInclude Include="RectFunction.h" />
+    <ClInclude Include="RemoveOldImage.h" />
     <ClInclude Include="Tank.h" />
   </ItemGroup>
   <ItemGroup>

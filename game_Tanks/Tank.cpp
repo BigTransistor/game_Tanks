@@ -79,3 +79,16 @@ Tank::Tank(	Picture4Directions* _picture, RECT _coordinates, Directions _directi
 	case leftDirection:	hBitmap = &picture->left;	break;
 	}
 }
+
+RECT Tank::tailCalculation()
+{
+	RECT tail(coordinates);
+	switch (direction)
+	{
+	case topDirection:	tail.top = tail.bottom - speed;  break;
+	case rightDirection:	tail.right = tail.left + speed;  break;
+	case bottomDirection: tail.bottom = tail.top + speed;  break;
+	case leftDirection:	tail.left = tail.right - speed;  break;
+	}
+	return tail;
+}

@@ -14,13 +14,15 @@ MoveBullet::MoveBullet(StaticBullet bulletInfo, RECT _coordinates, Directions _d
 	case leftDirection:		hBitmap = &picture->left;	break;
 	}
 }
-void MoveBullet::move()
+RECT MoveBullet::move()
 {
+	RECT tail(coordinates);
 	switch (direction)
 	{
-	case topDirection:		coordinates.top -= speed;	coordinates.bottom -= speed;	break;
-	case rightDirection:	coordinates.left += speed;	coordinates.right += speed;		break;
-	case bottomDirection:	coordinates.top += speed;	coordinates.bottom += speed;	break;
-	case leftDirection:		coordinates.left -= speed;	coordinates.right -= speed;		break;
+	case topDirection:		coordinates.top -= speed;	coordinates.bottom -= speed;	tail.top = tail.bottom - speed; break;
+	case rightDirection:	coordinates.left += speed;	coordinates.right += speed;		tail.right = tail.left + speed; break;
+	case bottomDirection:	coordinates.top += speed;	coordinates.bottom += speed;	tail.bottom = tail.top + speed; break;
+	case leftDirection:		coordinates.left -= speed;	coordinates.right -= speed;		tail.left = tail.right - speed; break;
 	}
+	return tail;
 }
